@@ -42,7 +42,7 @@ public class UploadService {
                 byte[] fileBytes = Files.readAllBytes(file.toPath());
                 s3Service.putObject(
                         s3Buckets.getBucketName(),
-                        id + "/" + file.getName(),
+                        file.getName(),
                         fileBytes);
             } catch (IOException e) {
                 log.error("Failed to convert file to file bytes" + e.getMessage());
