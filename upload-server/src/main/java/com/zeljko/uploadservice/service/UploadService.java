@@ -13,6 +13,8 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Collection;
 
 
@@ -35,10 +37,17 @@ public class UploadService {
 
         files.forEach(System.out::println);
 
-//                s3Service.putObject(
-//                        s3Buckets.getBucketName(),
-//                        id,
-//                        fileBytes);
+        files.forEach(file -> {
+            try {
+                byte[] fileBytes = Files.readAllBytes(file.toPath());
+                s3Service.putObject(
+                        s3Buckets.getBucketName(),
+                        id + "/" + file.getName(),
+                        fileBytes);
+            } catch (IOException e) {
+                log.error("Failed to convert file to file bytes" + e.getMessage());
+            }
+        });
     }
 
 
