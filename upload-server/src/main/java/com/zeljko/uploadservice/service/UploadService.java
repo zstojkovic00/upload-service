@@ -36,34 +36,37 @@ public class UploadService {
         );
 
         files.forEach(System.out::println);
-
-        files.forEach(file -> {
-            try {
-                byte[] fileBytes = Files.readAllBytes(file.toPath());
-                s3Service.putObject(
-                        s3Buckets.getBucketName(),
-                        file.getName(),
-                        fileBytes);
-            } catch (IOException e) {
-                log.error("Failed to convert file to file bytes" + e.getMessage());
-            }
-        });
+        if (files != null && !files.isEmpty()) {
+            files.forEach(file -> {
+                try {
+                    byte[] fileBytes = Files.readAllBytes(file.toPath());
+                    s3Service.putObject(
+                            s3Buckets.getBucketName(),
+                            "source/" + id + "/" + file.getName(),
+                            fileBytes);
+                } catch (IOException e) {
+                    log.error("Failed to convert file to file bytes" + e.getMessage());
+                }
+            });
+        }
     }
 
 
     public File cloneGit(String url, String id) throws Exception {
-
-        File outputDirectory = new File("out/" + id);
-        if (!outputDirectory.exists()) {
-            outputDirectory.mkdirs();
-        }
+        File outputDirectory;
         try {
+            outputDirectory = new File("out/" + id);
+            if (!outputDirectory.exists()) {
+                outputDirectory.mkdirs();
+            }
+
             Git.cloneRepository()
                     .setURI(url)
                     .setDirectory(new File(String.valueOf(outputDirectory)))
                     .call();
 
         } catch (GitAPIException e) {
+            log.error("Failed to clone repository:" + e.getMessage());
             throw new Exception("Failed to clone repository: \" + e.getMessage()");
         }
         return outputDirectory;
