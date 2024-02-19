@@ -1,7 +1,7 @@
 package com.zeljko.uploadservice.service;
 
 
-import com.zeljko.uploadservice.config.S3Buckets;
+import com.zeljko.uploadservice.config.s3.S3Buckets;
 import com.zeljko.uploadservice.request.GitRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +10,7 @@ import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.apache.commons.io.filefilter.RegexFileFilter;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -25,9 +26,15 @@ public class UploadService {
 
     private final S3Service s3Service;
     private final S3Buckets s3Buckets;
+    private final KafkaProducerService kafkaProducer;
+
+    @Value("${spring.kafka.producer.topic.repository.uploaded}")
+    private String topicName;
 
     public void uploadFile(GitRequest request, String id) throws Exception {
         File clonedDirectory = cloneGit(request.url(), id);
+
+        String s3Key = "source/" + id + "/";
 
         Collection<File> files = FileUtils.listFiles(
                 clonedDirectory,
@@ -42,13 +49,15 @@ public class UploadService {
                     byte[] fileBytes = Files.readAllBytes(file.toPath());
                     s3Service.putObject(
                             s3Buckets.getBucketName(),
-                            "source/" + id + "/" + file.getName(),
+                            s3Key + file.getName(),
                             fileBytes);
                 } catch (IOException e) {
                     log.error("Failed to convert file to file bytes" + e.getMessage());
                 }
             });
         }
+        log.info("Sending s3Key: {} to topic: {}", s3Key.toLowerCase(), topicName);
+        kafkaProducer.sendMessage(topicName, s3Key);
     }
 
 

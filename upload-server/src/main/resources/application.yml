@@ -3,3 +3,13 @@ aws:
   s3:
     buckets:
       main: zeljko-test-bucket
+
+spring:
+  kafka:
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      timeout: 1000
+      topic:
+        repository.uploaded: build-project

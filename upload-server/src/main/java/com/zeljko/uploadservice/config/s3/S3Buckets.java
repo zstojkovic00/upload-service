@@ -1,4 +1,4 @@
-package com.zeljko.uploadservice.config;
+package com.zeljko.uploadservice.config.s3;
 
 import lombok.Getter;
 import lombok.Setter;

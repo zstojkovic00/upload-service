@@ -1,4 +1,4 @@
-package com.zeljko.uploadservice.config;
+package com.zeljko.uploadservice.config.s3;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
