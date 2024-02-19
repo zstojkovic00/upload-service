@@ -1,0 +1,15 @@
+aws:
+  region: eu-central-1
+  s3:
+    buckets:
+      main: zeljko-test-bucket
+
+spring:
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.StringSerializer
+      topic:
+        repository.uploaded: build-project
+      group-id: consumer.deploy
