@@ -1,7 +1,7 @@
 package com.zeljko.deployservice.config.kafka;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,9 +22,9 @@ public class KafkaConsumerConfig {
     @Bean
     public ConsumerFactory<String, Object> consumerFactory() {
         Map<String, Object> config = new HashMap<>();
-        config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaConsumerProperties.getBootstrapServers());
-        config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, kafkaConsumerProperties.getKeySerializer());
-        config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, kafkaConsumerProperties.getValueSerializer());
+        config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaConsumerProperties.getBootstrapServers());
+        config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, kafkaConsumerProperties.getValueDeserializer());
+        config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, kafkaConsumerProperties.getKeyDeserializer());
         return new DefaultKafkaConsumerFactory<>(config);
     }
 

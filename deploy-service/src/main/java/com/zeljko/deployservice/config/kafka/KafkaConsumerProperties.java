@@ -14,7 +14,6 @@ import java.util.Map;
 public class KafkaConsumerProperties {
 
     private String bootstrapServers;
-    private String keySerializer;
-    private String valueSerializer;
-    private Map<String, Object> properties;
+    private String keyDeserializer;
+    private String valueDeserializer;
 }

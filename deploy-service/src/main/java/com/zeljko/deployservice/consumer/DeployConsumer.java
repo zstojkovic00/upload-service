@@ -10,11 +10,12 @@ public class DeployConsumer {
 
     @KafkaListener(
             topics = "build-project",
+            groupId = "group.id.test",
             containerFactory = "kafkaListenerContainerFactory"
     )
     public void deploy(String id) {
 
-        log.info("Recieved message: {}" + id);
+        log.info("Recieved message: {}", id);
     }
 
 }
