@@ -48,10 +48,10 @@ public class UploadService {
             files.forEach(file -> {
                 try {
                     byte[] fileBytes = Files.readAllBytes(file.toPath());
-//                    s3Service.putObject(
-//                            s3Buckets.getBucketName(),
-//                            s3Key + file.getName(),
-//                            fileBytes);
+                    s3Service.putObject(
+                            s3Buckets.getBucketName(),
+                            s3Key + file.getName(),
+                            fileBytes);
                 } catch (IOException e) {
                     log.error("Failed to convert file to file bytes" + e.getMessage());
                 }

@@ -20,8 +20,8 @@ public class DeployConsumer {
     )
     public void deploy(String key) {
         log.info("Recieved message: {}", key);
-        String something = "103a97c8-f4b0-4e35-a8ec-6fe2b77efd8a/";
-        s3Service.downloadS3Folder(s3Buckets.getBucketName(), something);
+
+        s3Service.downloadS3Folder(s3Buckets.getBucketName(), key);
 
     }
 

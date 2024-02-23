@@ -23,7 +23,7 @@ public class KafkaProducerService<T> {
         try {
             SendResult<String, T> result = kafkaTemplate.send(topic, message).get(kafkaProducerTimeout, TimeUnit.MILLISECONDS);
         } catch (Exception ex) {
-            log.error("Unkwonw error occured while sending message:{} to topic:{},error:{}", message.toString(), topic, ex.getMessage());
+            log.error("Unknown error occurred while sending message:{} to topic:{},error:{}", message.toString(), topic, ex.getMessage());
         }
     }
 
