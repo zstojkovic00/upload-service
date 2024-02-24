@@ -22,7 +22,7 @@ public class S3Service {
 
     private final S3Client s3Client;
 
-    public void downloadS3Folder(String bucketName, String folderName) {
+    public File downloadS3Folder(String bucketName, String folderName) {
 
         ListObjectsV2Request listObjectsRequest = ListObjectsV2Request.builder()
                 .bucket(bucketName)
@@ -55,5 +55,6 @@ public class S3Service {
                 throw new RuntimeException("Error downloading file from S3: " + e.getMessage(), e);
             }
         }
+        return outputDirectory;
     }
 }
